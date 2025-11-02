@@ -1,15 +1,23 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import CourseCard from "@/components/CourseCard";
 import AIAssistant from "@/components/AIAssistant";
-import { courses } from "@/data/courses";
+import { academicCourses, getCoursesByLevel, getCareerPaths } from "@/data/academicCourses";
 import heroImage from "@/assets/hero-learning.jpg";
 import { useAuth } from "@/hooks/useAuth";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 const Home = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [selectedCareer, setSelectedCareer] = useState<string | null>(null);
+
+  const primaryCourses = getCoursesByLevel('primary');
+  const highschoolCourses = getCoursesByLevel('highschool');
+  const advancedCourses = getCoursesByLevel('advanced');
+  const careerPaths = getCareerPaths();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -67,17 +75,105 @@ const Home = () => {
       {/* Courses Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="mb-12">
-          <h2 className="text-4xl font-bold mb-4">Popular Courses</h2>
+          <h2 className="text-4xl font-bold mb-4">Explore Our Courses</h2>
           <p className="text-xl text-muted-foreground">
-            Choose from our wide range of courses designed by industry experts
+            Comprehensive education from primary to advanced career-focused programs
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {courses.map((course) => (
-            <CourseCard key={course.id} {...course} />
-          ))}
-        </div>
+        <Tabs defaultValue="primary" className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-8">
+            <TabsTrigger value="primary">Primary Level</TabsTrigger>
+            <TabsTrigger value="highschool">High School</TabsTrigger>
+            <TabsTrigger value="advanced">Advanced</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="primary" className="space-y-6">
+            <div className="mb-4">
+              <h3 className="text-2xl font-semibold mb-2">Primary Education</h3>
+              <p className="text-muted-foreground">Essential foundational subjects for young learners</p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {primaryCourses.map((course) => (
+                <CourseCard 
+                  key={course.id} 
+                  id={course.id}
+                  title={course.title}
+                  description={course.description}
+                  image="/placeholder.svg"
+                  duration={course.duration}
+                  students={0}
+                  level={course.difficulty_level}
+                />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="highschool" className="space-y-6">
+            <div className="mb-4">
+              <h3 className="text-2xl font-semibold mb-2">High School Education</h3>
+              <p className="text-muted-foreground">Advanced subjects preparing students for higher education</p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {highschoolCourses.map((course) => (
+                <CourseCard 
+                  key={course.id} 
+                  id={course.id}
+                  title={course.title}
+                  description={course.description}
+                  image="/placeholder.svg"
+                  duration={course.duration}
+                  students={0}
+                  level={course.difficulty_level}
+                />
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="advanced" className="space-y-6">
+            <div className="mb-6">
+              <h3 className="text-2xl font-semibold mb-2">Advanced Career Programs</h3>
+              <p className="text-muted-foreground mb-4">Specialized courses for professional development</p>
+              
+              <div className="flex flex-wrap gap-2 mb-6">
+                <Badge 
+                  variant={selectedCareer === null ? "default" : "outline"}
+                  className="cursor-pointer"
+                  onClick={() => setSelectedCareer(null)}
+                >
+                  All Careers
+                </Badge>
+                {careerPaths.map((career) => (
+                  <Badge 
+                    key={career}
+                    variant={selectedCareer === career ? "default" : "outline"}
+                    className="cursor-pointer"
+                    onClick={() => setSelectedCareer(career)}
+                  >
+                    {career}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {advancedCourses
+                .filter(course => selectedCareer === null || course.career_path === selectedCareer)
+                .map((course) => (
+                  <CourseCard 
+                    key={course.id} 
+                    id={course.id}
+                    title={course.title}
+                    description={course.description}
+                    image="/placeholder.svg"
+                    duration={course.duration}
+                    students={0}
+                    level={course.difficulty_level}
+                  />
+                ))}
+            </div>
+          </TabsContent>
+        </Tabs>
       </section>
 
       <AIAssistant />

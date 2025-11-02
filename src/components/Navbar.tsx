@@ -1,9 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Settings } from "lucide-react";
+import { BookOpen, Settings, LogOut, LogIn } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, signOut } = useAuth();
 
   return (
     <nav className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-50">
@@ -16,7 +18,7 @@ const Navbar = () => {
             </span>
           </Link>
           
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <Link to="/">
               <Button 
                 variant={location.pathname === "/" ? "default" : "ghost"}
@@ -25,15 +27,34 @@ const Navbar = () => {
                 Courses
               </Button>
             </Link>
-            <Link to="/settings">
+            {user && (
+              <Link to="/settings">
+                <Button 
+                  variant={location.pathname === "/settings" ? "default" : "ghost"}
+                  size="icon"
+                  className="transition-all"
+                >
+                  <Settings className="h-5 w-5" />
+                </Button>
+              </Link>
+            )}
+            {user ? (
               <Button 
-                variant={location.pathname === "/settings" ? "default" : "ghost"}
-                size="icon"
-                className="transition-all"
+                onClick={signOut}
+                variant="outline"
+                className="gap-2"
               >
-                <Settings className="h-5 w-5" />
+                <LogOut className="h-4 w-4" />
+                Sign Out
               </Button>
-            </Link>
+            ) : (
+              <Link to="/auth">
+                <Button variant="default" className="gap-2">
+                  <LogIn className="h-4 w-4" />
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

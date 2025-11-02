@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import CourseDetail from "./pages/CourseDetail";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/auth" element={<Auth />} />
           <Route path="/" element={<Home />} />
           <Route path="/course/:id" element={<CourseDetail />} />
           <Route path="/settings" element={<Settings />} />

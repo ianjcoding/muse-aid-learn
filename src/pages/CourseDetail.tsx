@@ -1,4 +1,5 @@
-import { useParams, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import AIAssistant from "@/components/AIAssistant";
 import { courses } from "@/data/courses";
@@ -7,10 +8,34 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, Clock, Users, FileText, Video, FileQuestion, BookOpen } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const CourseDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
   const course = courses.find(c => c.id === id);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/auth");
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   if (!course) {
     return (

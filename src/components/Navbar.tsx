@@ -27,6 +27,14 @@ const Navbar = () => {
                 Courses
               </Button>
             </Link>
+            <Link to="/kids">
+              <Button 
+                variant={location.pathname === "/kids" ? "default" : "ghost"}
+                className="transition-all"
+              >
+                Kids Learning
+              </Button>
+            </Link>
             {user && (
               <Link to="/settings">
                 <Button 

@@ -8,6 +8,7 @@ import CourseDetail from "./pages/CourseDetail";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
+import KidsLearning from "./pages/KidsLearning";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/auth" element={<Auth />} />
           <Route path="/" element={<Home />} />
+          <Route path="/kids" element={<KidsLearning />} />
           <Route path="/course/:id" element={<CourseDetail />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

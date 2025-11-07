@@ -145,6 +145,74 @@ export type Database = {
           },
         ]
       }
+      children_courses: {
+        Row: {
+          age_range: string
+          color: string
+          created_at: string
+          description: string
+          icon: string
+          id: string
+          subject: string
+          title: string
+        }
+        Insert: {
+          age_range: string
+          color: string
+          created_at?: string
+          description: string
+          icon: string
+          id?: string
+          subject: string
+          title: string
+        }
+        Update: {
+          age_range?: string
+          color?: string
+          created_at?: string
+          description?: string
+          icon?: string
+          id?: string
+          subject?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      children_lessons: {
+        Row: {
+          activities: Json | null
+          content: string
+          course_id: string
+          created_at: string
+          id: string
+          title: string
+        }
+        Insert: {
+          activities?: Json | null
+          content: string
+          course_id: string
+          created_at?: string
+          id?: string
+          title: string
+        }
+        Update: {
+          activities?: Json | null
+          content?: string
+          course_id?: string
+          created_at?: string
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "children_lessons_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "children_courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           created_at: string

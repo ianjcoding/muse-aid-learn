@@ -213,6 +213,47 @@ export type Database = {
           },
         ]
       }
+      children_progress: {
+        Row: {
+          activities_completed: Json | null
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          id: string
+          lesson_id: string
+          stars_earned: number | null
+          user_id: string
+        }
+        Insert: {
+          activities_completed?: Json | null
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          lesson_id: string
+          stars_earned?: number | null
+          user_id: string
+        }
+        Update: {
+          activities_completed?: Json | null
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          lesson_id?: string
+          stars_earned?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "children_progress_lesson_id_fkey"
+            columns: ["lesson_id"]
+            isOneToOne: false
+            referencedRelation: "children_lessons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       courses: {
         Row: {
           created_at: string
